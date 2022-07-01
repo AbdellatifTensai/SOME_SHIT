@@ -6,13 +6,9 @@ class Vec3{
 
     Vec3(double x, double y, double z){ data = new double[]{x,y,z}; }
 
-    Vec3(Vec3 v){
-        data = new double[]{v.x(), v.y(), v.z()};
-    }
+    Vec3(Vec3 v){ data = new double[]{v.x(), v.y(), v.z()}; }
 
-    Vec3(double i){
-        data = new double[]{i,i,i};
-    }
+    Vec3(double i){ data = new double[]{i,i,i}; }
 
     double x(){ return data[0];}
     double y(){ return data[1];}
@@ -38,9 +34,23 @@ class Vec3{
         return x()*v.x() + y()*v.y() + z()*v.z();
     }
 
+    Vec3 multiply(Vec3 v){
+        return new Vec3(x()*v.x(), y()*v.y(), z()*v.z());
+    }
+
+    Vec3 pow(double t){
+        return new Vec3(Math.pow(x(), t),
+            Math.pow(y(), t),
+            Math.pow(z(), t));
+    }
+    
+    double lenghtSquared(){
+        Vec3 v = new Vec3(x(), y(), z());
+        return v.dot(v);
+    }
+
     double lenght(){
-        Vec3 v = new Vec3(x(),y(),z());
-        return Math.sqrt(v.dot(v));
+        return Math.sqrt(lenghtSquared());
     }
 
     Vec3 unitVecotr(){
@@ -51,6 +61,34 @@ class Vec3{
         return new Vec3(y()*v.z() - z()*v.y(),
                         z()*v.x() - x()*v.z(),
                         x()*v.y() - y()*v.x());
+    }
+
+    Vec3 squreRoot(){
+        return new Vec3(Math.sqrt(x()), Math.sqrt(y()), Math.sqrt(z()));
+    }
+
+    static Vec3 random(double min, double max){
+        return new Vec3((max - min)*Math.random() + min,
+            (max - min)*Math.random() + min,
+            (max - min)*Math.random() + min);
+    }
+
+    static Vec3 randomInUnitSphere(){
+        while(true){
+            Vec3 v = random(-1.0D, 1.0D);
+            if(v.lenghtSquared()>= 1) continue;
+            return v;
+        }
+    }
+
+    boolean nearZero(){
+        final double zero_plus = 1.0e-8;
+        return (x()<zero_plus && y()< zero_plus && z()< zero_plus);
+    }
+
+    Vec3 reflect(Vec3 n){
+        Vec3 v = new Vec3(x(), y(), z());
+        return v.sub(n.scale(v.dot(n)).scale(2.0D));
     }
 
     @Override

@@ -2,7 +2,7 @@ class OutputImage{
 
     private static final int WIDTH = 256;
     private static final int HEIGHT = 256;
-    Color color;
+    Vec3 color;
 
     public static void main(String[] args) {
         new OutputImage().output_ppm2();
@@ -12,7 +12,7 @@ class OutputImage{
         System.out.print("P3\n"+WIDTH+" "+HEIGHT+"\n255\n");
         for(int x=HEIGHT-1; x>=0; --x){
             for(int y=0; y<WIDTH; ++y){
-                color = new Color((double) y/(WIDTH-1), (double) x/(HEIGHT-1),.25D);
+                color = new Vec3((double) y/(WIDTH-1), (double) x/(HEIGHT-1),.25D);
                 color.printColor();
             }
         }

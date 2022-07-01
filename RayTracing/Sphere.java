@@ -3,9 +3,12 @@ class Sphere extends Hittable {
     Vec3 center;
     double radius;
     
-    Sphere(Vec3 center, double radius){
+    Sphere(Vec3 center, Vec3 color, double radius, Reflection material, double fuzz){
         this.center = center;
+        this.albedo = color;
         this.radius = radius;
+        this.material = material;
+        this.fuzz = fuzz;
     }
 
     @Override
@@ -33,8 +36,8 @@ class Sphere extends Hittable {
     }
 
     private void setOutsideFace(Ray ray, Vec3 normal){
-        outside_face = ray.direction().dot(normal) < 0; 
+        outside_face = ray.direction().dot(normal) < 0.0D; 
         normal_at_hit = outside_face? normal: normal.inverse();
     }
-    
+
 }

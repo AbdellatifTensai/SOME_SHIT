@@ -7,6 +7,10 @@ class Ray {
         this.origin = origin;
         this.direction = direction;
     }
+    Ray(){
+        this.origin = new Vec3();
+        this.direction = new Vec3();
+    }
     
     Vec3 at(double t){
         return new Vec3(
