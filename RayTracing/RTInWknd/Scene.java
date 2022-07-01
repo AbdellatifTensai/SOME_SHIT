@@ -109,17 +109,21 @@ class Scene{
         System.out.println("***** Picking Spheres *****");
         for(int x=-11; x<11; x++){
             for(int y=-11; y<11; y++){
+
                 double rnd = Math.random();
                 Vec3 center = new Vec3(x+.9D*Math.random(), .02D, y+.9D*Math.random());
+
                 if(center.sub(new Vec3(4.0D, .2D, 0.0D)).lenght() > .9D){
                     if(rnd < .8D){
                         Vec3 color = Vec3.random(.0D, 1.0D).multiply(Vec3.random(.0D, 1.0D));
                         spheres.add(new Sphere().center(center).color(color).material(Reflection.LAMBERTIAN).radius(.2D));
-                    }else if(rnd <.95D){
+                    }
+                    else if(rnd <.95D){
                         Vec3 color = Vec3.random(.5D, 1.0D);
                         double fuzz = .5D*Math.random();
                         spheres.add(new Sphere().center(center).color(color).material(Reflection.METAL).radius(.2D).fuzz(fuzz));
-                    }else{
+                    }
+                    else{
                         spheres.add(new Sphere().center(center).material(Reflection.DIELECTRIC).radius(.2D).refraction(1.5D));
                     }
                 }
@@ -134,9 +138,4 @@ class Scene{
 
         return spheres.toArray(new Hittable[]{});
     }
-
-    // private Vec3 randomInHemisphere(Vec3 normal){
-    //     Vec3 in_unit_sphere = Vec3.randomInUnitSphere();
-    //     return in_unit_sphere.dot(normal)>0? in_unit_sphere: in_unit_sphere.inverse();
-    // }
 }
