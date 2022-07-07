@@ -1,3 +1,5 @@
+package com.abdo.rtinwkn;
+
 class Ray {
     
     Vec3 origin;

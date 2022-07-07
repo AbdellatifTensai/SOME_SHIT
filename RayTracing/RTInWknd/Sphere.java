@@ -1,3 +1,5 @@
+package com.abdo.rtinwkn;
+
 class Sphere extends Hittable {
     
     Vec3 center;
@@ -23,15 +25,15 @@ class Sphere extends Hittable {
     @Override
     boolean hit(Ray ray, double t_min, double t_max){
         Vec3 oc = ray.origin().sub(center);
-        double a = ray.direction().dot(ray.direction);
-        double b = 2.0D * ray.direction().dot(oc);
-        double c = oc.dot(oc) - radius*radius;
-        double discriminant = b*b - 4*a*c;
+        double a = ray.direction().lenghtSquared();
+        double half_b = ray.direction().dot(oc);
+        double c = oc.lenghtSquared() - radius*radius;
+        double discriminant = half_b*half_b - a*c;
         if(discriminant < 0) return false; 
         
-        double root = (-b - Math.sqrt(discriminant)) / (2.0D*a);
+        double root = (-half_b - Math.sqrt(discriminant)) / a;
         if(root<t_min || root>t_max){
-            root = (-b + Math.sqrt(discriminant)) / (2.0D*a);
+            root = (-half_b + Math.sqrt(discriminant)) / a;
             if(root<t_min || root>t_max){
                 return false;
             }

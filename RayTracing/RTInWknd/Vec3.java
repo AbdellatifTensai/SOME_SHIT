@@ -1,4 +1,6 @@
-import java.util.Random;
+package com.abdo.rtinwkn;
+
+import java.util.SplittableRandom;
 
 class Vec3{
 
@@ -70,9 +72,10 @@ class Vec3{
     }
 
     static Vec3 random(double min, double max){
-        return new Vec3((max - min)*Math.random() + min,
-            (max - min)*Math.random() + min,
-            (max - min)*Math.random() + min);
+        SplittableRandom rand = new SplittableRandom();
+        return new Vec3((max - min)*rand.nextDouble() + min,
+            (max - min)*rand.nextDouble() + min,
+            (max - min)*rand.nextDouble() + min);
     }
 
     static Vec3 randomInUnitSphere(){
@@ -84,8 +87,9 @@ class Vec3{
     }
 
     static Vec3 randomInUnitDisk(){
+        SplittableRandom rand = new SplittableRandom();
         while(true){
-            Vec3 v = new Vec3(2.0D*Math.random() -1.0D, 2.0D*Math.random() -1.0D, 0.0D);
+            Vec3 v = new Vec3(2.0D*rand.nextDouble() -1.0D, 2.0D*rand.nextDouble() -1.0D, 0.0D);
             if(v.lenghtSquared() >= 1.0D) continue;
             return v;
         }

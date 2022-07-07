@@ -1,9 +1,11 @@
+package com.abdo.rtinwkn;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.SplittableRandom;
 
 class Scene{
     
@@ -11,8 +13,8 @@ class Scene{
     private static final int WIDTH = 1200;
     private static final int HEIGHT =(int) (WIDTH/ASPECT_RATIO);
 
-    private static final int SAMPLES_PER_PIXEL = 500;
-    private static final int BOUNCES = 50;
+    private static final int SAMPLES_PER_PIXEL = 16;
+    private static final int BOUNCES = 8;
 
     private static final Vec3 ORIGIN = new Vec3(13.0D, 2.0D, 3.0D);
     private static final Vec3 TARGET = new Vec3(0.0D, 0.0D, .0D);
@@ -38,6 +40,7 @@ class Scene{
 
     private String renderImage(Camera camera) throws IOException{
         StringBuilder sb = new StringBuilder();
+        SplittableRandom rand = new SplittableRandom();
         sb.append("P3\n"+ WIDTH+ " "+ HEIGHT+ "\n255\n");
 
         for(int y=HEIGHT-1; y>=0; --y){
@@ -45,8 +48,8 @@ class Scene{
             for(int x=0; x<WIDTH; ++x){
                 Vec3 pixel_color = new Vec3(0.0D);
                 for(int s=0; s<SAMPLES_PER_PIXEL; ++s){
-                    double u = (double) ((((double) x) + Math.random()) / (WIDTH-1));
-                    double v = (double) ((((double) y) + Math.random()) / (HEIGHT-1));
+                    double u = (double) ((((double) x) + rand.nextDouble()) / (WIDTH-1));
+                    double v = (double) ((((double) y) + rand.nextDouble()) / (HEIGHT-1));
                     Ray camera_ray = camera.cameraRay(u, v);
                     pixel_color = pixel_color.add(rayColor(camera_ray, BOUNCES));
                 }
@@ -81,7 +84,8 @@ class Scene{
         Hittable object = null;
         double t_closest = t_max;
 
-        for(int x=0; x<OBJECTS.length; x++){
+        int size = OBJECTS.length; 
+        for(int x=0; x<size; x++){
             if(OBJECTS[x].hit(ray, t_min, t_closest)){
                 object = OBJECTS[x];
                 t_closest = object.t_at_hit;
@@ -106,12 +110,13 @@ class Scene{
 
     private static Hittable[] randomSpheres(){
         ArrayList<Hittable> spheres = new ArrayList<>();
+        SplittableRandom rand = new SplittableRandom();
         System.out.println("***** Picking Spheres *****");
         for(int x=-11; x<11; x++){
             for(int y=-11; y<11; y++){
 
-                double rnd = Math.random();
-                Vec3 center = new Vec3(x+.9D*Math.random(), .02D, y+.9D*Math.random());
+                double rnd = rand.nextDouble();
+                Vec3 center = new Vec3(x+.9D*rand.nextDouble(), .02D, y+.9D*rand.nextDouble());
 
                 if(center.sub(new Vec3(4.0D, .2D, 0.0D)).lenght() > .9D){
                     if(rnd < .8D){
@@ -120,7 +125,7 @@ class Scene{
                     }
                     else if(rnd <.95D){
                         Vec3 color = Vec3.random(.5D, 1.0D);
-                        double fuzz = .5D*Math.random();
+                        double fuzz = .5D*rand.nextDouble();
                         spheres.add(new Sphere().center(center).color(color).material(Reflection.METAL).radius(.2D).fuzz(fuzz));
                     }
                     else{

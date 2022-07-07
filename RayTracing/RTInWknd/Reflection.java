@@ -1,3 +1,7 @@
+package com.abdo.rtinwkn;
+
+import java.util.SplittableRandom;
+
 @FunctionalInterface
 interface Reflection{
 
@@ -30,7 +34,7 @@ interface Reflection{
         double cos_theta = Math.min(unit_direction.inverse().dot(hit_object.normal_at_hit), 1.0D);
         double sin_theta = Math.sqrt(1.0D - cos_theta*cos_theta);
 
-        if(refration_ratio * sin_theta>1 || reflectance(cos_theta,refration_ratio) > Math.random()){
+        if(refration_ratio * sin_theta>1 || reflectance(cos_theta,refration_ratio) > new SplittableRandom().nextDouble()){
             Vec3 refracted_direction = unit_direction.reflect(hit_object.normal_at_hit);
             return new Ray(hit_object.point_at_hit, refracted_direction);
         }
