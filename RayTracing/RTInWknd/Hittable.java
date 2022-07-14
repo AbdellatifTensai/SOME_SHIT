@@ -1,5 +1,3 @@
-package com.abdo.rtinwkn;
-
 abstract class Hittable {
 
     double t_at_hit;

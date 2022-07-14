@@ -16,8 +16,9 @@ class TestSimplexer{
 class Simplexer implements Iterator<Token>, Iterable<Token>{
 
     List<Token> tokens = new ArrayList<>();
-    final List<String> KEYWORDS = Arrays.asList("if","return", "else", "break", "func", "for", "while");
-    final List<String> BOOLEANS = Arrays.asList("true", "false");
+    String[] KEYWORDS = {"if","return", "else", "break", "func", "for", "while"};
+    String[] BOOLEANS = {"true", "false"};
+    
     int index = 0;
     
     Simplexer(String buffer) {
@@ -70,8 +71,11 @@ class Simplexer implements Iterator<Token>, Iterable<Token>{
 
     private boolean isOperator(char ch) { return ch == '+'||ch == '-'||ch == '*'||ch == '/'||ch == '%'||ch == '('||ch == ')'||ch == '='; }
 
-    private String keyword(List<String> list,char ch, String source, int index){
-        for(String word : list) if(ch == word.charAt(0)) if(checkUpcomingWord(source, word, index)) return word;
+    private String keyword(String[] list,char ch, String source, int index){
+        for(String word : list) 
+            if(ch == word.charAt(0)) 
+                if(checkUpcomingWord(source, word, index)) 
+                    return word;
         return "";
     }
 
@@ -103,8 +107,7 @@ class Simplexer implements Iterator<Token>, Iterable<Token>{
 }
 
 class Token{
-    String value;
-    String type;
+    String value,type;
     Token(String value, String type){this.value = value; this.type = type;}
     @Override
     public String toString(){ return "Token: " + value + ", " + type; }

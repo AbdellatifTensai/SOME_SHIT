@@ -1,5 +1,3 @@
-package com.abdo.rtinwkn;
-
 import java.util.SplittableRandom;
 
 @FunctionalInterface

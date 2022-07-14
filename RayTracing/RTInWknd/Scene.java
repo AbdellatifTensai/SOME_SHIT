@@ -1,4 +1,3 @@
-package com.abdo.rtinwkn;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,6 +5,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.SplittableRandom;
+import java.util.stream.IntStream;
 
 class Scene{
     
@@ -41,21 +41,36 @@ class Scene{
     private String renderImage(Camera camera) throws IOException{
         StringBuilder sb = new StringBuilder();
         SplittableRandom rand = new SplittableRandom();
+        Vec3 pixel_color = new Vec3(0.0D);
         sb.append("P3\n"+ WIDTH+ " "+ HEIGHT+ "\n255\n");
 
-        for(int y=HEIGHT-1; y>=0; --y){
-            System.out.println(y);
-            for(int x=0; x<WIDTH; ++x){
-                Vec3 pixel_color = new Vec3(0.0D);
-                for(int s=0; s<SAMPLES_PER_PIXEL; ++s){
+        IntStream.range(1-HEIGHT,1).forEach(y->{
+            System.out.println(-y);
+            IntStream.range(0,WIDTH).forEach(x->{
+                pixel_color.set(0.0D, 0.0D, 0.0D); 
+                IntStream.range(0,SAMPLES_PER_PIXEL).parallel().forEach(s->{
                     double u = (double) ((((double) x) + rand.nextDouble()) / (WIDTH-1));
-                    double v = (double) ((((double) y) + rand.nextDouble()) / (HEIGHT-1));
+                    double v = (double) ((((double) -y) + rand.nextDouble()) / (HEIGHT-1));
                     Ray camera_ray = camera.cameraRay(u, v);
-                    pixel_color = pixel_color.add(rayColor(camera_ray, BOUNCES));
-                }
+                    pixel_color.addToThis(rayColor(camera_ray, BOUNCES));
+                });
                 sb.append(Vec3ToRGB(pixel_color));
-            }
-        }
+            });
+        });
+
+        // for(int y=HEIGHT-1; y>=0; --y){
+        //     System.out.println(y);
+        //     for(int x=0; x<WIDTH; ++x){
+        //         pixel_color.set(0.0D, 0.0D, 0.0D);
+        //         for(int s=0; s<SAMPLES_PER_PIXEL; ++s){
+        //             double u = (double) ((((double) x) + rand.nextDouble()) / (WIDTH-1));
+        //             double v = (double) ((((double) y) + rand.nextDouble()) / (HEIGHT-1));
+        //             Ray camera_ray = camera.cameraRay(u, v);
+        //             pixel_color.addToThis(rayColor(camera_ray, BOUNCES));
+        //         }
+        //         sb.append(Vec3ToRGB(pixel_color));
+        //     }
+        // }
         return sb.toString();
     }
 

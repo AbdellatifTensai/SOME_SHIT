@@ -1,5 +1,3 @@
-package com.abdo.rtinwkn;
-
 class Camera {
 
     private double aspect_ratio;      

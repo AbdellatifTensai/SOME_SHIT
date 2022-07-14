@@ -1,5 +1,3 @@
-package com.abdo.rtinwkn;
-
 import java.util.SplittableRandom;
 
 class Vec3{
@@ -18,6 +16,12 @@ class Vec3{
     double y(){ return data[1];}
     double z(){ return data[2];}
 
+    void set(double x, double y, double z){
+        this.data[0] = x;
+        this.data[1] = y;
+        this.data[2] = z;
+    }
+
     Vec3 scale(double t){
         return new Vec3(x() * t, y() * t, z() * t);
     }
@@ -28,6 +32,12 @@ class Vec3{
 
     Vec3 add(Vec3 v){
         return new Vec3(x() + v.x(), y() + v.y(), z() + v.z());
+    }
+
+    void addToThis(Vec3 v){
+        this.data[0] = v.x();
+        this.data[1] = v.y();
+        this.data[2] = v.z();
     }
 
     Vec3 sub(Vec3 v){

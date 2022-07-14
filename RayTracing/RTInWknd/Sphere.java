@@ -1,5 +1,3 @@
-package com.abdo.rtinwkn;
-
 class Sphere extends Hittable {
     
     Vec3 center;
